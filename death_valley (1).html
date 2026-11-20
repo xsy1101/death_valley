@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Five tokens. One research mission. Find the right collaborator.">
+<title>Death Valley | Healthcare Networking Game</title>
+<style>
+:root{color-scheme:light;--paper:#fbf8ef;--ink:#18213e;--blue:#263dd9;--lime:#e4f56b;--line:#c5c7d4;--muted:#454c63;--orange:#ff936a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.5 system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
+h1:focus{outline:0}
+h1,h2,p{margin:0}
+.shell{width:min(1120px,calc(100% - 64px));margin-inline:auto}
+header{border-bottom:1px solid var(--ink)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:68px}
+.brand{font-weight:900;letter-spacing:-.03em}
+.meta,.kicker,.caption{font:700 .875rem/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.045em;text-transform:uppercase}
+.meta{color:var(--muted)}
+main{padding-block:66px 48px}
+.kicker{color:var(--blue);margin-bottom:14px}
+h1{font-size:clamp(1.95rem,5vw,3.25rem);line-height:1.07;letter-spacing:-.05em;font-weight:900;text-wrap:balance}
+.layout h1.compact{font-size:clamp(1.65rem,3.6vw,2.35rem)}
+.welcome h1{font-size:clamp(3.2rem,10.4vw,8.6rem);text-transform:uppercase;line-height:.83;letter-spacing:-.096em}
+h2{font-size:1.125rem;line-height:1.3}
+.lead{font-size:clamp(1.08rem,2.2vw,1.37rem);margin-top:20px;max-width:36em;text-wrap:pretty}
+.welcome .lead{font-weight:750}
+.copy{margin-top:10px;color:var(--muted);max-width:38em}
+.primary{background:var(--blue);color:white;border:2px solid var(--blue);font-weight:800;padding:13px 25px;min-height:52px;margin-top:26px}
+.primary:hover{background:var(--ink);border-color:var(--ink)}
+.hero{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(35px,7vw,100px);align-items:stretch}
+.poster{background:var(--blue);color:white;padding:24px;min-height:280px;display:grid;grid-template-rows:auto 1fr auto;gap:16px}
+.poster .caption:last-child{text-align:right}
+.coins{display:grid;align-content:center;grid-template-columns:repeat(3,1fr);gap:7%;padding:6% 2% 10%;width:min(100%,310px);margin:auto}
+.coin{aspect-ratio:1;border:2px solid var(--ink);border-radius:50%;background:var(--lime);color:var(--ink);display:grid;place-items:center;box-shadow:inset 0 0 0 5px var(--lime),inset 0 0 0 7px var(--ink);font-size:clamp(1.2rem,3vw,2.1rem);line-height:1}
+.coin:nth-child(2n){transform:translateY(55%)}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);padding:0;margin:45px 0 0;border-block:1px solid var(--ink)}
+.steps li{padding:17px 18px 18px 0}
+.steps li+li{padding-left:18px;border-left:1px solid var(--line)}
+.steps strong,.steps span{display:block}
+.steps span{margin-top:4px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(205px,280px);gap:clamp(28px,5vw,64px);align-items:start}
+.sidebar{display:grid;gap:19px}
+.status{border:1px solid var(--ink);background:white;padding:17px}
+.status p+p{margin-top:8px}
+.dots{display:flex;gap:6px;margin-top:10px}
+.dot{width:20px;height:20px;border-radius:50%;border:1px solid var(--ink);background:var(--lime)}
+.dot.spent{background:transparent;border-color:#71778d}
+.result-verdict{border-left:6px solid currentColor;padding:20px 22px}
+.result-verdict.correct{color:#14532d;background:#e5f5e9}
+.result-verdict.incorrect{color:#861d26;background:#fce8e8}
+.result-verdict .lead{margin-top:10px}
+.match-explanation{margin-top:22px;max-width:38em}
+.match-explanation p{margin-top:5px}
+.mission-brief{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:760px;margin-top:24px;padding-block:17px;border-block:1px solid var(--line)}
+.mission-brief p{margin-top:5px}
+.networking-guide .group{max-width:760px}
+.networking-guide .group p{margin-bottom:0}
+.event{border:1px solid var(--ink);border-left:8px solid var(--blue);padding:22px;margin-top:25px}
+.event.penalty{border-left-color:#d14c19}
+.event.empty{border-left-color:#707789}
+.event .copy{margin:0 0 10px}
+.group{margin-top:24px}
+.group p{color:var(--muted);margin-top:4px;margin-bottom:9px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choice{display:flex;align-items:center;gap:10px;text-align:left;color:var(--ink);background:white;border:1px solid var(--ink);padding:11px 12px;font-weight:730;min-height:48px}
+.choice .identity{display:grid;gap:2px}.identity small{font-size:.875rem;color:var(--muted);font-weight:500}
+.choices.offers{grid-template-columns:1fr;max-width:40rem}
+.choice:hover{background:var(--lime)}
+.mark{display:grid;place-items:center;flex:0 0 29px;height:29px;background:var(--lime);font:700 .75rem ui-monospace,monospace}
+.mark.board{background:#e3e8ff}
+.back{display:block;border:0;border-bottom:1px solid;padding:0;background:none;color:var(--blue);margin-top:19px}
+.quote{margin:25px 0 0;padding:19px 22px;border-left:6px solid var(--blue);background:#e9edff;font-size:clamp(1.1rem,2vw,1.32rem)}
+summary{cursor:pointer;font-weight:800}
+.notes{margin:11px 0 0;padding:0;list-style:none}
+.notes li{border-top:1px solid var(--line);padding:10px 0;font-size:.925rem}
+.notes strong{display:block}
+footer{border-top:1px solid var(--line);padding-block:17px;color:var(--muted);font-size:.875rem}
+@media(max-width:760px){.shell{width:calc(100% - 36px)}main{padding-top:38px}.hero{gap:26px}.poster{padding:14px;min-height:195px}.layout{gap:25px}.choices{grid-template-columns:1fr}}
+@media(max-width:580px){.hero,.layout{grid-template-columns:1fr}.poster{display:none}.steps{grid-template-columns:repeat(2,1fr);margin-top:32px}.steps li:nth-child(3){padding-left:0;border-left:0}.steps li:nth-child(n+3){border-top:1px solid var(--line)}.sidebar{order:-1;gap:8px}.status{padding:12px}.status p+p{margin-top:4px}.status .caption{letter-spacing:0}.dot{width:15px;height:15px}.choices{grid-template-columns:repeat(2,minmax(0,1fr))}.choice{overflow-wrap:anywhere}}
+@media(max-width:380px){.choices{grid-template-columns:1fr}.meta{font-size:.75rem}}
+@media(max-width:540px){.mission-brief{grid-template-columns:1fr;gap:16px}}
+</style>
+</head>
+<body>
+<header><div class="shell top"><span class="brand">Death Valley</span><span class="meta">Healthcare networking game</span></div></header>
+<main id="screen" class="shell"><p>Enable JavaScript in your browser to play Death Valley.</p></main>
+<footer class="shell">Solo demo of the tabletop game. Other players are simulated.</footer>
+<script>
+const profiles = [
+  {
+    name: 'Jordan', role: 'Oncologist', initials: 'JO', type: 'player',
+    answers: [
+      'I’m an oncologist. I see patients with cancer and work with our study team on projects that involve blood testing.',
+      'We draw blood at the clinic all the time, and some of my patients also give samples for research. It depends on what the samples were collected for.',
+      'I can introduce you to our study team and help figure out which patients might qualify. The team would handle enrollment and book the research blood draws.'
+    ],
+    asks: 'How far along is your blood test?',
+    result: 'An oncologist can advise on screening and introduce you to the hospital team. The study team coordinates recruitment and sample collection.'
+  },
+  {
+    name: 'Alex', role: 'Clinical Research Coordinator', initials: 'AL', type: 'player',
+    answers: [
+      'I’m a clinical research coordinator. I work with the clinic and the lab to keep patient studies running.',
+      'Our studies collect blood samples from patients. The ones we already have were collected for specific studies, so I’d have to check what participants agreed to.',
+      'Once your study has approval, I can recruit people with and without cancer, handle consent, and schedule the blood draws. I can arrange for the samples to go to your lab, too.'
+    ],
+    asks: 'What could your team handle if you joined a patient study?'
+  },
+  {
+    name: 'Sam', role: 'Biomedical Engineer', initials: 'SA', type: 'player',
+    answers: [
+      'I’m a biomedical engineer. I work with a hospital lab to build and test devices that run blood tests.',
+      'We’ve used patient blood samples in our device tests. The hospital lab supplied them for that project, so I’d have to check whether any could be used for yours.',
+      'The hospital lab would put us in touch with the study team. Once samples arrive, I can help you figure out how much blood the test needs and whether it gives consistent results.'
+    ],
+    asks: 'What could your lab bring to a prototype project?',
+    result: 'An engineer can help turn your test into a device. You need patient samples first to see how well the test works.'
+  },
+  { role: 'Patient Advocate', initials: 'PA', type: 'board', answers: ['I help patients understand what joining a study involves.', 'I can give feedback on recruitment materials and make study visits easier for participants.', 'I know every accessible entrance in the hospital.', 'Our group can help with outreach. The study team handles sample collection.'], result: 'An advocate can improve recruitment materials and help a study reach patients. The coordinator can arrange collection through the study.' },
+  { role: 'Lab Technician', initials: 'LT', type: 'board', answers: ['I process blood samples for laboratory tests.', 'I can advise on how to handle and store blood samples.', 'I label everything. Even my lunch.', 'I can process research samples after the study team provides them.'], result: 'A lab technician can process and store blood samples once they arrive. The coordinator can help get them collected.' },
+  { role: 'Epidemiologist', initials: 'EP', type: 'board', answers: ['I study how diseases affect large groups of people.', 'I can design a study to assess how accurately your test detects cancer.', 'I have a spreadsheet for my spreadsheets.', 'I analyze data collected by study teams.'], result: 'An epidemiologist can help design the study and interpret results. The coordinator can arrange patient recruitment and collection.' },
+  { role: 'Grant Officer', initials: 'GO', type: 'board', answers: ['I review funding opportunities for health research.', 'I can point you toward grants for early detection projects.', 'My favorite word is “deadline.”', 'I handle funding. The study team handles recruitment and samples.'], result: 'A grant officer can help you find funding. The coordinator can arrange the sample collection your project needs.' }
+];
+
+const questions = [
+  'What do you do?',
+  'Do you have patient blood samples?',
+  'Who could help us collect new samples?'
+];
+
+const yourOffers = [
+  'We have a promising blood test method and early lab results to share.',
+  'Our lab has the equipment and experience to analyze blood samples.',
+  'We can compare test results from people with and without cancer to see how well the test works.'
+];
+
+const cards = [
+  {title:'Conference Coffee Break',kind:'network',text:'You make small talk while waiting for coffee. It turns into a useful introduction.'},
+  {title:'A Mutual Connection!',kind:'network',text:'A friend says: “Wait, I know someone you should talk to.”'},
+  {title:'Unexpected Elevator Pitch',kind:'network',text:'The elevator stops at every floor. Plenty of time for one question.'},
+  {title:'Poster Session',kind:'network',text:'You spot a poster that sounds almost relevant. Worth asking!'},
+  {title:'Someone Replies!',kind:'network',text:'Your email receives a response before the next geological era.'},
+  {title:'Research Mixer',kind:'network',text:'The name tags are crooked, but the conversation is promising.'},
+  {title:'Grant Deadline',kind:'penalty',text:'You spend the entire weekend formatting a grant application.',loss:1},
+  {title:'Email Ghosted',kind:'penalty',text:'“Just following up on my previous follow-up…”',loss:1},
+  {title:'Conference Wi-Fi',kind:'empty',text:'You found the right person online. The Wi-Fi did not.'},
+  {title:'Wrong Zoom Link',kind:'empty',text:'You join a meeting about marine biology. You study cancer.'},
+  {title:'Free Conference Cookies',kind:'network',text:'A cookie break turns into a surprisingly productive conversation.'}
+];
+const startingTokens = 5;
+const bestMatch = 1;
+const screen = document.querySelector('#screen');
+let game;
+
+function shuffle(items) {
+  const shuffled = [...items];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function startOver(focus = true) {
+  game = { page: 'welcome', tokens: startingTokens, deck: shuffle(cards), card: null,
+    penalty: 0, profile: null, reply: '', clues: [], reveals: new Map(), knownRoles: new Set(),
+    choice: null, notesOpen: false };
+  go('welcome', focus);
+}
+
+function go(page, focus = true) {
+  game.page = page;
+  render();
+  if (focus) {
+    screen.querySelector('h1').focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+  }
+}
+
+function drawCard() {
+  game.card = game.deck.pop();
+  game.penalty = Math.min(game.tokens - 1, game.card.loss || 0);
+  game.tokens -= 1 + game.penalty;
+  go('card');
+}
+
+function afterTurn() {
+  go(game.tokens ? 'board' : 'choose');
+}
+
+function contact(index) {
+  game.profile = index;
+  const profile = profiles[index];
+  if (profile.type === 'player') {
+    go('question');
+    return;
+  }
+  const remaining = game.reveals.get(index) || shuffle(profile.answers);
+  const answer = remaining.pop();
+  game.reveals.set(index, remaining.length ? remaining : null);
+  recordReply(answer);
+}
+
+function askQuestion(index) {
+  if (index === 0) game.knownRoles.add(game.profile);
+  recordReply(profiles[game.profile].answers[index]);
+}
+
+function contactName(profile) {
+  return profile.name || profile.role;
+}
+
+function recordReply(reply) {
+  game.reply = reply;
+  game.clues.push({ name: contactName(profiles[game.profile]), reply });
+  go('reply');
+}
+
+function shareOffer(index) {
+  game.clues.at(-1).offer = yourOffers[index];
+  afterTurn();
+}
+
+function primary(label, action) {
+  return `<button class="primary" type="button" data-action="${action}">${label}</button>`;
+}
+
+function heading(label, title, copy = '', compact = false) {
+  return `${label ? `<p class="kicker">${label}</p>` : ''}<h1 tabindex="-1"${compact ? ' class="compact"' : ''}>${title}</h1>${copy ? `<p class="lead">${copy}</p>` : ''}`;
+}
+
+function sidebar() {
+  const tokens = Array.from({ length: startingTokens }, (_, i) =>
+    `<span class="dot${i >= game.tokens ? ' spent' : ''}"></span>`).join('');
+  const clues = game.clues.map(clue => `<li><strong>${clue.name}</strong>${clue.reply}
+    ${clue.offer ? `<p class="copy"><strong>You shared</strong>${clue.offer}</p>` : ''}</li>`).join('');
+  const showGoal = game.page !== 'choose' && game.page !== 'result';
+  return `<aside class="sidebar" aria-label="Round information">
+    <div class="status"><p class="caption"><strong>${game.tokens} of ${startingTokens} tokens left</strong></p>
+      <div class="dots" aria-hidden="true">${tokens}</div>
+      ${showGoal ? '<p class="copy">Find someone who can help you get patient blood samples through an approved study.</p>' : ''}
+    </div>
+    ${clues ? `<details class="status" ${game.notesOpen ? 'open' : ''}><summary>Clues (${game.clues.length})</summary><ul class="notes">${clues}</ul></details>` : ''}
+  </aside>`;
+}
+
+function layout(content, showStatus = true) {
+  screen.innerHTML = showStatus ? `<div class="layout"><section>${content}</section>${sidebar()}</div>` : `<section>${content}</section>`;
+}
+
+function profileGroup(title, type, action, instruction = '') {
+  const choices = profiles.flatMap((profile, index) => {
+    if (profile.type !== type) return [];
+    const learnedRole = type === 'player' && game.knownRoles.has(index);
+    return `<button class="choice" type="button" data-action="${action}" data-index="${index}">
+      <span class="mark ${type}" aria-hidden="true">${profile.initials}</span>
+      <span class="identity">${contactName(profile)}${learnedRole ? `<small>${profile.role}</small>` : ''}</span>
+    </button>`;
+  }).join('');
+  return `<section class="group"><h2>${title}</h2>${instruction ? `<p>${instruction}</p>` : ''}<div class="choices">${choices}</div></section>`;
+}
+
+function render() {
+  switch (game.page) {
+    case 'welcome':
+      screen.innerHTML = `<section class="welcome">
+        <div class="hero">
+          <div><h1 tabindex="-1">Death<br>Valley</h1><p class="lead">Find a collaborator who can move your research forward.</p>
+          <p class="copy">You have five tokens to make connections and figure out who can help.</p>
+          ${primary('Start game', 'start')}</div>
+          <div class="poster" aria-hidden="true"><span class="caption">Your starting hand</span>
+            <div class="coins">${Array.from({ length: 5 }, () => '<span class="coin">✦</span>').join('')}</div><span class="caption">5 tokens</span>
+          </div>
+        </div>
+        <ol class="steps">
+          <li><strong>Get your mission</strong><span>See what your research needs.</span></li>
+          <li><strong>Draw a card</strong><span>Spend one token per draw.</span></li>
+          <li><strong>Make a connection</strong><span>Get one answer if your card lets you network.</span></li>
+          <li><strong>Pick your collaborator</strong><span>Make your choice when the tokens run out.</span></li>
+        </ol>
+      </section>`;
+      break;
+    case 'networking-guide':
+      screen.innerHTML = `<section class="networking-guide">
+        ${heading('', 'How networking works', 'You can talk to another player or explore a profile on the board. In this solo demo, the other players are simulated.')}
+        <div class="mission-brief">
+          <section><h2>Player profiles</h2><p>Talk to someone at the table. You start with their name and choose one question, such as “Do you have patient blood samples?” They can ask about your work in return.</p></section>
+          <section><h2>Board profiles</h2><p>Choose a role printed on the board, such as Lab Technician. You get one random clue about them. It might tell you what they can help with or give you a detail that’s less relevant to your project.</p></section>
+        </div>
+        <section class="group"><h2>Why use both?</h2><p>Player conversations let you ask about what your project needs and explain what you can offer. The board adds roles beyond the people at your table and gives you leads even in a solo round. With only five tokens, you have to decide when to ask a specific question and when to take a chance on a clue. Either type of contact can be your final pick.</p></section>
+        ${primary('See your mission', 'mission')}
+      </section>`;
+      break;
+    case 'mission':
+      layout(`${heading('', 'Find a collaborator', 'You’re a <strong>cancer researcher</strong> developing a blood test to detect cancer earlier.')}
+        <div class="mission-brief">
+          <section><h2>What you need</h2><p>A partner who can help you get blood samples from patients with and without cancer through an approved study.</p></section>
+          <section><h2>What you bring</h2><p>A promising test, lab equipment, and experience analyzing blood samples.</p></section>
+        </div>
+        ${primary('Continue', 'board')}`, false);
+      break;
+    case 'board':
+      layout(`${heading('', 'Draw a card', 'Spend one token to see if you get a chance to network.')}
+        ${primary('Draw card', 'draw')}`);
+      break;
+    case 'card': {
+      const card = game.card;
+      const canNetwork = card.kind === 'network';
+      const effect = canNetwork ? 'You can get one answer from one contact.' :
+        game.penalty ? 'Lose one extra token. No networking this turn.' : 'No networking this turn.';
+      layout(`${heading(canNetwork ? 'Networking opportunity' : card.loss ? 'Setback' : 'Missed opportunity', card.title)}
+        <div class="event ${card.kind}"><p class="copy">${card.text}</p><p><strong>${effect}</strong></p></div>
+        ${canNetwork ? primary('Choose a contact', 'network') : primary(game.tokens ? 'Try again' : 'Choose collaborator', 'next')}`);
+      break;
+    }
+    case 'network':
+      layout(`${heading('', 'Choose one contact')}
+        ${profileGroup('Other players', 'player', 'contact', 'Ask one question, then answer one about your work.')}
+        ${profileGroup('Board profiles', 'board', 'contact', 'Get one random answer.')}`);
+      break;
+    case 'question':
+      layout(`${heading('', `Ask ${contactName(profiles[game.profile])} one question`, '', true)}
+        <div class="group choices">${questions.map((question, index) =>
+          `<button class="choice" type="button" data-action="ask" data-index="${index}">${question}</button>`).join('')}</div>
+        <button class="back" type="button" data-action="network">Back to contacts</button>`);
+      break;
+    case 'reply': {
+      const profile = profiles[game.profile];
+      const next = primary(game.tokens ? 'Continue' : 'Choose collaborator', 'next');
+      layout(`${heading('', `${contactName(profile)}’s reply`, '', true)}
+        <blockquote class="quote">“${game.reply}”</blockquote>
+        ${profile.type === 'player' ? primary('Your turn to answer', 'offer') : next}`);
+      break;
+    }
+    case 'offer': {
+      const profile = profiles[game.profile];
+      layout(`${heading('', `${profile.name} asks you`, '', true)}
+        <blockquote class="quote">“${profile.asks}”</blockquote>
+        <div class="group choices offers" role="group" aria-label="Choose what to share">${yourOffers.map((offer, index) =>
+          `<button class="choice" type="button" data-action="share" data-index="${index}">${offer}</button>`).join('')}</div>
+        <button class="back" type="button" data-action="next">Skip answering</button>`);
+      break;
+    }
+    case 'choose':
+      layout(`${heading('', 'Choose your collaborator', 'Who can best help you get patient blood samples through an approved study?')}
+        ${profileGroup('Other players', 'player', 'finish')}
+        ${profileGroup('Board profiles', 'board', 'finish')}`);
+      break;
+    case 'result': {
+      const match = game.choice === bestMatch;
+      const selected = profiles[game.choice];
+      layout(`<div class="result-verdict ${match ? 'correct' : 'incorrect'}">
+        ${heading('', match ? 'Correct match' : 'Not a good fit', match ? '' : `You chose ${selected.name ? `${selected.name}, the ${selected.role.toLowerCase()}` : `the ${selected.role.toLowerCase()}`}.`)}
+        </div>
+        ${match ? '' : `<p class="copy">${selected.result}</p>`}
+        <div class="match-explanation"><h2>Best match · Alex, Clinical Research Coordinator</h2>
+          <p>They can recruit patients and arrange blood sample collection once your study has approval and participants have consented.</p></div>
+        ${primary('Play again', 'restart')}`);
+      break;
+    }
+  }
+}
+
+screen.addEventListener('toggle', event => {
+  if (event.target instanceof HTMLDetailsElement && screen.contains(event.target)) game.notesOpen = event.target.open;
+}, true);
+
+screen.addEventListener('click', event => {
+  const control = event.target.closest('button[data-action]');
+  if (!control || !screen.contains(control)) return;
+  const index = Number(control.dataset.index);
+  switch (control.dataset.action) {
+    case 'start': go('networking-guide'); break;
+    case 'mission': go('mission'); break;
+    case 'board': go('board'); break;
+    case 'draw': drawCard(); break;
+    case 'network': go('network'); break;
+    case 'contact': contact(index); break;
+    case 'ask': askQuestion(index); break;
+    case 'offer': go('offer'); break;
+    case 'share': shareOffer(index); break;
+    case 'next': afterTurn(); break;
+    case 'finish': game.choice = index; go('result'); break;
+    case 'restart': startOver(); break;
+  }
+});
+
+startOver(false);
+</script>
+</body>
+</html>
